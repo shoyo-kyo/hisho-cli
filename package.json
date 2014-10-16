@@ -1,9 +1,21 @@
 {
   "name": "hisho-cli",
-  "description": "description",
   "version": "0.0.1",
+  "description": "hisho client",
+  "main": "lib/hisho/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:shoyo-kyo/hisho-cli.git"
+  },
+  "keywords": [
+    "hisho"
+  ],
   "author": {
-    "name": "shoyo kyo"
+    "name": "Shoyo Kyo",
+    "email": "kangsungyang@gmail.com"
   },
   "licenses": [
     {
@@ -14,7 +26,7 @@
   "engines": {
     "node": ">= 0.8.0"
   },
-  "devDependencies": {
+  "dependencies": {
     "cheerio": "^0.17.0",
     "js-beautify": "^1.5.1",
     "jschardet": "^1.1.0",
@@ -27,16 +39,22 @@
     "colors": "~0.6.2",
     "async": "~0.9.0",
     "node-watch": "~0.3.4",
-    "date-utils": "~1.2.16"
+    "date-utils": "~1.2.16",
+    "prompt": "~0.2.14"
   },
-  "main": "lib/hisho/index.js",
   "bin": {
     "hisho": "bin/hisho"
   },
-  "scripts": {
-    "test": "unitTest"
+  "readme": "hisho-cli\n=========\n\nhisho client\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/shoyo-kyo/hisho-cli/issues"
   },
-  "keywords": [
-    "hisho"
-  ]
+  "homepage": "https://github.com/shoyo-kyo/hisho-cli",
+  "_id": "hisho-cli@0.0.1",
+  "dist": {
+    "shasum": "3c3cb7a34dd7b9ffc8b8d2b9ea15026421657787"
+  },
+  "_resolved": "./hisho-cli.tar.gz",
+  "_from": "./hisho-cli.tar.gz"
 }

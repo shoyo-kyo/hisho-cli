@@ -8,11 +8,14 @@ module.exports = {
 	 * 1. directory names
 	 */
 	dir: {
-		"input"      : "src",        //作業ディレクトリ名
-		"hic"        : "hic",        //中間コード格納ディレクトリ名
-		"output"     : "dist",       //最終コード格納ディレクトリ名
-		"components" : "components", //コンポーネント格納ディレクトリ名
-		"hic_tpl"    : ".hisho/template"     //中間コード変換Template格納ディレクトリ
+		"input"       : "src",              //作業ディレクトリ名
+		"output"      : "dist",             //最終コード格納ディレクトリ名
+		"components"  : "components",       //コンポーネント格納ディレクトリ名
+		"hic"         : ".hisho/hic",       //中間コード格納ディレクトリ名
+		"hic_tpl"     : ".hisho/template",  //中間コード変換Template格納ディレクトリ
+		"hic_update"  : ".hisho/tmp/update",    //ファイル更新日時リスト格納フォルダ名
+		"hic_compile" : ".hisho/tmp/compile",   //ファイルコンパイル関連リスト格納フォルダ名
+		"hic_import"  : ".hisho/tmp/import"     //importデータ格納フォルダ名
 	},
 
 

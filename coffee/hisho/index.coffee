@@ -6,21 +6,12 @@
 #
 do ->
 
+	#
+	# Set command options
+	#
+
 	#require
-	async = require('async')
 	opts = require("opts")
-	nodeWatch = require('node-watch')
-	dateUtils = require('date-utils')
-	hishoUtils = require('./util/util')
-
-	#hisho util
-	hisho = global.hisho = hishoUtils.initialize()
-
-	#module
-	compile =
-		components : require("./compile/components")
-		pages : require("./compile/pages")
-		hic : require("./compile/hic")
 
 	#command option setting
 	options = [
@@ -56,98 +47,30 @@ do ->
 
 	#command option parse
 	opts.parse(options, true)
-	isMinify = opts.get("minify") || false
-	isWatch = opts.get("watch") || false
-	mode = if opts.get("version") then "version" else opts.get("compile") or "all"
+	isMinify = opts.get("minify") or false
+	isWatch = opts.get("watch") or false
+	compileType = opts.get("compile") or "all"
 
-	#
-	# ビルド終了メッセージ表示
-	#
-	showEndMessage = (isWatch, startDate)->
-		endDate = new Date();
-		time =  (endDate - startDate) / 1000
-		hisho.showMessage("BUILD.END",{ time: time, date: endDate.toFormat("YYYY.MM.DD HH24:MI:SS") })
-		if isWatch
-			console.log hisho.getMessage("WATCH.WAITING")
-		return false
+	args = opts.args()
+	mode = args[0] || "compile"
 
-	#
-	# watch判定および、メッセージ表示
-	#
-	watchOption = (iswatch, callback)->
-		if iswatch
-				hisho.showMessage("WATCH.START")
-				hisho.showMessage("WATCH.WAITING")
-				
-				dirs = [hisho.config.dir.input, hisho.config.dir.hic_tpl]
-
-				nodeWatch dirs, (filename)=>
-					if filename
-						console.log(hisho.getMessage("COMMON.ARROW") + hisho.getMessage("WATCH.CHANGE", {file:filename}))
-					else
-						console.log(hisho.getMessage("COMMON.ARROW") + hisho.getMessage("WATCH.CREATE"))
-
-					callback()
-			else
-				callback()
-		return false
-
+	if opts.get("version")
+		mode = "version"
 
 	#実行
 	switch mode
 		when "version"
-			pkg = require "../../package.json"
-			hisho.showMessage("v#{pkg.version}")
+			version = require("./version")
+			version.run();
 
-		when "conponents"
-			watchOption isWatch, =>
-				startDate = new Date();
-				hisho.showMessage("BUILD.START")
-				async.series([
-					(callback)=> compile.components.initialize(isMinify, callback),
-					(callback)=> 
-						setTimeout(=>
-							showEndMessage(isWatch, startDate)
-						,500)
-				])
+		when "init"
+			init = require("./init")
+			init.run();
 
-		when "pages"
-			watchOption isWatch, =>
-				startDate = new Date();
-				hisho.showMessage("BUILD.START")
-				async.series([
-					(callback)=> compile.pages.initialize(isMinify, callback),
-					(callback)=> 
-						setTimeout(=>
-							showEndMessage(isWatch, startDate)
-						,500)
-				])
+		when "compile"
+			compile = require("./compile")
+			compile.run(compileType);
 
-		when "build"
-			watchOption isWatch, =>
-				startDate = new Date();
-				hisho.showMessage("BUILD.START")
-				async.series([
-					(callback)=> compile.hic.initialize(isMinify, callback)
-					(callback)=> 
-						setTimeout(=>
-							showEndMessage(isWatch, startDate)
-						,500)
-				])
-
-		when "all"
-			watchOption isWatch, =>
-				startDate = new Date();
-				hisho.showMessage("BUILD.START")
-				async.series([
-					(callback)=> compile.components.initialize(isMinify, callback),
-					(callback)=> compile.pages.initialize(isMinify, callback),
-					(callback)=> compile.hic.initialize(isMinify, callback)
-					(callback)=> 
-						setTimeout(=>
-							showEndMessage(isWatch, startDate)
-						,500)
-				])
 	return 
 
 

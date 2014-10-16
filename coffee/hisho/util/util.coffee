@@ -22,11 +22,6 @@
 		# initialize
 		#
 		initialize: ()->
-			#get config JSON
-			@config = require(process.cwd() + '/.hisho/config.js')
-
-			#get message JSON 
-			@_message = require('./message')
 
 			#hisho-compiler格納
 			_.each @config.compiler.include, (v,i)=>
@@ -37,17 +32,26 @@
 			
 			return @
 
+		# hisho cli path
+		cliPath: path.normalize( process.argv[1].replace(/^(.*?hisho-cli).*$/, "$1") )
 
-		# hisho-config格納
-		config: {}
-
-		# hisho-util-message save
-		_message: {}
-
-		# hisho-compiler save
+		# ver
+		_config: null
+		_message: null
 		_compilers:
 			name:{}
 			type:{}
+
+		#
+		# get hisho-config json
+		#
+		config: (->
+			try
+				@_config = require(process.cwd() + '/.hisho/config.js')
+			catch e
+				return null
+			return @_config;
+		)()
 
 		#
 		# get hisho-compiler List
@@ -60,6 +64,10 @@
 		# message data get
 		#
 		getMessage: (type, datas=null)->
+			#get message JSON 
+			if not @_message
+				@_message = require('./message')
+
 			result = @_message[type]
 			result = @template(result, datas)
 			return result
