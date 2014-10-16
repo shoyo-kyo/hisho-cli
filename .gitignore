@@ -1,0 +1,32 @@
+# OS
+## Windows
+Thumbs.db
+
+## OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Editor
+## Eclipse
+.project
+.settings/
+.idea
+
+# SVN
+.svn/
+
+# Grunt
+.grunt/
+node_modules/
+
+# Sass
+.sass-cache/
+
+## Compass Sprite
+*-s[0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z].png
+
+# Grunt
+tmp/

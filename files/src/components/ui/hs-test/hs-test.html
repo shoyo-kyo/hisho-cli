@@ -1,0 +1,39 @@
+<hisho-module name="hs-test" attributes="icon text">
+    <template>
+
+        <style type="text/scss">
+            .hs-test{
+                #{&}__icon{
+                    color:red;
+                }
+                #{&}__text{
+                    color:blue;
+                }
+            }
+        </style>
+
+        <div class="hs-test">
+            <p class="hs-test__icon">
+                <content select=".first"></content>
+            </p>
+            <p class="hs-test__text">
+                <content select=".second"></content>
+            </p>
+            <p class="hs-test__text">
+                <content select="option"></content>
+            </p>
+        <!--/.hs-test--></div>
+
+    </template>
+
+    <script>
+        (function(){
+            hs("hs-test", {
+                el: aaaaaa,
+                initalize: function(){
+                }
+            });
+        })();
+    </script>
+
+</hisho-module>

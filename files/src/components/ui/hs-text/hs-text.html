@@ -1,0 +1,32 @@
+<hisho-module name="hs-text">
+    <template>
+
+        <style type="text/scss">
+            .hs-text{
+                #{&}__icon{
+                    color:red;
+                }
+                #{&}__text{
+                    color:blue;
+                }
+            }
+        </style>
+
+        <p class="hs-text">
+            <span class="hs-text__icon">B</span>
+            <span class="hs-text__text"><content/></span>
+        <!--/.hs-text--></p>
+
+    </template>
+
+    <script>
+        (function(){
+            hs("hs-text", {
+                el: aaaaaa,
+                initalize: function(){
+                }
+            });
+        })();
+    </script>
+
+</hisho-module>

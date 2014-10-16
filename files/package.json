@@ -1,0 +1,21 @@
+{
+  "name": "projectName",
+  "description": "description",
+  "version": "0.0.1",
+  "author": "shoyo kyo",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": ""
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "devDependencies": {
+    "hisho-client": "~0.0.1",
+    "hisho-compiler-js": "~0.0.1",
+    "hisho-compiler-sass": "~0.0.1",
+    "hisho-compiler-tpl": "~0.0.1"
+  }
+}

@@ -1,0 +1,23 @@
+<hisho-module name="hs-ect">
+    <template>
+
+        <style type="text/scss">
+            .hs-ect{
+                #{&}__li{
+                    color:red;
+                }
+            }
+        </style>
+
+        <ul class="hs-ect{% if @attrs.disabled : %} ExDisabled{% end %}">
+        {% for item in @doms.item : %}
+        <li class="hs-ect__li">{%- item %}</li>
+        {% end %}
+        <!--/.hs-ect--></ul>
+
+    </template>
+
+    <script>
+    </script>
+
+</hisho-module>

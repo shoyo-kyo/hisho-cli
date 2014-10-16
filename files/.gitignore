@@ -1,0 +1,30 @@
+# OS
+## Windows
+Thumbs.db
+
+## OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Editor
+## Eclipse
+.project
+.settings/
+.idea
+
+# SVN
+.svn/
+
+# hisho
+dist/
+hic/
+
+# Sass
+.sass-cache/
+
+## Compass Sprite
+*-s[0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z].png
+

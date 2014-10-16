@@ -1,0 +1,23 @@
+@charset "UTF-8";
+// =============================
+// @name
+//   Hisho var0.1.1 alpha
+//   generated sass File
+//
+// @component <%- @name %>
+// @path <%- @output %>
+// @base <%- @input %>
+// =============================
+
+//--------------------------------
+// 1.base css include
+//--------------------------------
+{%- @code %}
+
+
+//--------------------------------
+// 2.component css include
+//--------------------------------
+{% for item in @import : %}
+@import "{%- item %}";
+{% end %}

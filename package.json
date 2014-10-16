@@ -1,0 +1,42 @@
+{
+  "name": "hisho-cli",
+  "description": "description",
+  "version": "0.0.1",
+  "author": {
+    "name": "shoyo kyo"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/gruntjs/grunt-cli/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "devDependencies": {
+    "cheerio": "^0.17.0",
+    "js-beautify": "^1.5.1",
+    "jschardet": "^1.1.0",
+    "mkdirp": "^0.5.0",
+    "opts": "^1.2.2",
+    "ect": "~0.5.9",
+    "iconv-lite": "~0.4.4",
+    "encoding": "~0.1.8",
+    "underscore": "~1.7.0",
+    "colors": "~0.6.2",
+    "async": "~0.9.0",
+    "node-watch": "~0.3.4",
+    "date-utils": "~1.2.16"
+  },
+  "main": "lib/hisho/index.js",
+  "bin": {
+    "hisho": "bin/hisho"
+  },
+  "scripts": {
+    "test": "unitTest"
+  },
+  "keywords": [
+    "hisho"
+  ]
+}
