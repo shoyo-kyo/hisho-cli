@@ -1,118 +1,120 @@
-((global)->
+#
+# @name hisho.compile
+# @version 0.0.1
+# @author shoyo kyo
+# @description
+#  コンパイル処理記載
+#
+do (global) ->
+
 	#require
 	fs = require('fs')
 	path = require('path')
 	_ = require('underscore')
-	colors = require('colors')
-	cwd = process.cwd()
-	config = require(cwd + '/hisho_config.js')
-	
-	parseComponents = require("./parseComponents").parseComponents
-	parsePages = require("./parsePages").parsePages
-	build = require("./build").build
-
-	makeDir = require('./makeDir')
-	directoryIterator = require('./directoryIterator')
+	hisho = {}
+	async = require('async')
+	nodeWatch = require('node-watch')
+	dateUtils = require('date-utils')
 
 	module.exports = 
 
 		#
-		# コンポーネントをsass,html,jsに分離し生成
+		# run task
 		#
-		components: (callback)->
-			console.log('\nRunning compile processing of "Component files".\n'.yellow)
+		run : (type, isWatch, isMinify)->
 
-			inputDir = path.join(config.directory.input, config.directory.components)
+			#require
+			hisho = global.hisho = require("./util/util")
+			compile =
+				components : require("./compile/components")
+				pages : require("./compile/pages")
+				hic : require("./compile/hic")
 
-			#指定ディレクトリ内にある全てのファイルを取得し、メタ言語の形式にコンパイルする
-			directoryIterator(
-				dir: inputDir
+			#message
+			startDate = new Date();
+			hisho.showMessage "BUILD.START"
 
-				#/components内のhtmlとフォルダのみ対象
-				filter: (filePath)->
-					return if filePath.match(/.*\.html$/) or not filePath.match(/.*\..*?$/) then true else false
+			#実行
+			switch type
+				when "conponents"
+					@_setWatch isWatch, =>
+						async.series([
+							(callback)=> compile.components.initialize(isMinify, callback),
+							(callback)=> 
+								setTimeout(=>
+									@_setShowMsg(isWatch, startDate)
+								,500)
+						])
 
-				#コンパイル処理
-				onFile: (filePath)->
-					fileData = fs.readFileSync(filePath, "utf8")
-					datas = parseComponents.parse(filePath,fileData)
-					
-					#ファイル生成
-					_.each datas, (v, k)->
-						if v
-							makeDir(v.path)
-							fs.writeFileSync(v.path, v.code, 'utf8')
+				when "pages"
+					@_setWatch isWatch, =>
+						async.series([
+							(callback)=> compile.pages.initialize(isMinify, callback),
+							(callback)=> 
+								setTimeout(=>
+									@_setShowMsg(isWatch, startDate)
+								,500)
+						])
 
-					console.log( ('Compile of ' + path.dirname(filePath)) )
-					return true;
+				when "build"
+					@_setWatch isWatch, =>
+						async.series([
+							(callback)=> compile.hic.initialize(isMinify, callback)
+							(callback)=> 
+								setTimeout(=>
+									@_setShowMsg(isWatch, startDate)
+								,500)
+						])
 
-				#処理完了
-				onCompleate: ->
-					callback() if callback
-					
-			)
-			return false;
+				when "all"
+					@_setWatch isWatch, =>
+						async.series([
+							(callback)=> compile.components.initialize(isMinify, callback),
+							(callback)=> compile.pages.initialize(isMinify, callback),
+							(callback)=> compile.hic.initialize(isMinify, callback)
+							(callback)=> 
+								setTimeout(=>
+									@_setShowMsg(isWatch, startDate)
+								,500)
+						])
+			return @
 
-		#
-		# ページをsass,html,jsに分離し生成
-		#
-		pages: (callback)->
-			console.log('\nRunning compile processing of "Page files".\n'.yellow)
-
-			inputDir = config.directory.input
-
-			#指定ディレクトリ内にある全てのファイルを取得し、メタ言語の形式にコンパイルする
-			directoryIterator(
-				dir: inputDir
-
-				#/componentsは除外
-				filter: (filePath)->
-					str = config.directory.components.replace("/","")
-					return if not filePath.match(str) then true else false
-
-				#コンパイル処理
-				onFile: (filePath)->
-					fileData = fs.readFileSync(filePath, "utf8")
-					datas = parsePages.parse(filePath, fileData)
-					
-					#ファイル生成
-					_.each datas, (v, k)->
-						if v
-							makeDir(v.path)
-							fs.writeFileSync(v.path, v.code, 'utf8')
-
-					console.log( ('Compile of ' + filePath) )
-					return true;
-
-				#処理完了
-				onCompleate: ->
-					callback() if callback
-			)
-			return false;
 
 		#
-		# 最終output作成
+		# watch判定および、メッセージ表示
 		#
-		build: (minify)->
-			console.log('Running build processing of "Static files".\n'.yellow)
-			build.initialize();
-			return false;
+		_setWatch : (iswatch, callback)->
+			#watch有効時
+			if iswatch
+				hisho.showMessage "WATCH.START"
+				hisho.showMessage "WATCH.WAITING"
+				
+				dirs = [hisho.config.dir.input, hisho.config.dir.hic_tpl]
+
+				nodeWatch dirs, (filename)=>
+					if filename
+						hisho.showMessage "WATCH.CHANGE", {file:filename}
+					else
+						hisho.showMessage "WATCH.CREATE"
+
+					callback()
+			#無効
+			else
+				callback()
+			return @
 
 		#
-		# 全工程実行
+		# ビルド終了メッセージ表示
 		#
-		all: (minify)->
-			@build()
-			return false;
+		_setShowMsg : (isWatch, startDate)->
+			endDate = new Date();
+			time =  (endDate - startDate) / 1000
+			hisho.showMessage "BUILD.END", { time: time, date: endDate.toFormat("YYYY.MM.DD HH24:MI:SS") }
+			if isWatch
+				hisho.showMessage "WATCH.WAITING"
+			return @
 
-			comp = @components(=>
-				@pages(=>
-					@build()
-				)
-			)
-			return false;
-
-)(@)
+	return
 
 
 

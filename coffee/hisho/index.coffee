@@ -2,7 +2,7 @@
 # @name hisho-cli
 # @version 0.0.1
 # @author shoyo kyo
-# @git 
+# @git https://github.com/shoyo-kyo/hisho-cli
 #
 do ->
 
@@ -69,7 +69,7 @@ do ->
 
 		when "compile"
 			compile = require("./compile")
-			compile.run(compileType);
+			compile.run(compileType, isWatch, isMinify);
 
 	return 
 

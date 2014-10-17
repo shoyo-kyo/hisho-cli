@@ -5,7 +5,7 @@
 # @description
 #  コンポーネントファイルを中間言語（メタ言語）にコンパイル
 #
-((global, hisho)->
+do (global, hisho:global.hisho) ->
 	
 	#require
 	fs = require('fs')
@@ -112,9 +112,7 @@
 	#extend module
 	coreModule = require('./core')
 	_.extend(module.exports, coreModule, subModule);
-
-
-)(global, global.hisho)
+	return
 
 
 

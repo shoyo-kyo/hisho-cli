@@ -5,7 +5,7 @@
 # @description
 #  プロジェクト生成
 #
-((global)->
+do (global) ->
 
 	#require
 	fs = require('fs')
@@ -130,4 +130,4 @@
 			)
 			return @
 
-)(global)
+	return

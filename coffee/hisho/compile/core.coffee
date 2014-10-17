@@ -6,7 +6,7 @@
 #  各ファイルを中間言語（メタ言語）にコンパイルする際の共通処理を記載したcoreファイル
 #  extendsして使用
 #
-((global, hisho)->
+do (global, hisho:global.hisho) ->
 
 	#require
 	fs = require('fs')
@@ -51,9 +51,6 @@
 			compile : {}
 			import  : {}
 			beforeUpdate: {}
-
-
-
 
 
 		#
@@ -334,7 +331,7 @@
 
 			return result
 
-)(global, global.hisho)
+	return
 
 
 

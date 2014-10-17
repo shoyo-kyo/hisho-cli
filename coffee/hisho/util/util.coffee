@@ -5,7 +5,7 @@
 # @description
 #  グローバル変数に格納する設定や共通関数を定義(global.hishoで呼び出す)
 #
-((global)->
+do (global) ->
 
 	#require
 	fs = require('fs')
@@ -18,30 +18,16 @@
 	#
 	module.exports = 
 
-		#
-		# initialize
-		#
-		initialize: ()->
-
-			#hisho-compiler格納
-			_.each @config.compiler.include, (v,i)=>
-				item = require(v)
-				@_compilers.name[item.contentName] = item
-				for type in item.contentType
-					@_compilers.type[type] = item
-			
-			return @
-
 		# hisho cli path
 		cliPath: path.normalize( process.argv[1].replace(/^(.*?hisho-cli).*$/, "$1") )
+
+		#hisho compiler module npm path
+		modulePath: path.normalize( process.cwd() + "/node_modules" )
 
 		# ver
 		_config: null
 		_message: null
-		_compilers:
-			name:{}
-			type:{}
-
+		_compilers:null
 		#
 		# get hisho-config json
 		#
@@ -58,6 +44,19 @@
 		# type: "name" or "type"
 		#
 		getCompiler: (type)->
+			if not @_compilers
+				#初期化
+				@_compilers =
+					name:{}
+					type:{}
+				
+				#hisho-compiler格納
+				_.each @config.compiler.include, (v,i)=>
+					item = require(@modulePath + "/" + v)
+					@_compilers.name[item.contentName] = item
+					for t in item.contentType
+						@_compilers.type[t] = item
+
 			return @_compilers[type]
 
 		#
@@ -277,8 +276,4 @@
 
 			return iterator(options)
 
-
-
-
-)(global)
-
+	return

@@ -5,7 +5,8 @@
 # @description
 #  バージョン情報表示
 #
-((global)->
+do (global) ->
+
 	module.exports = 
 
 		#
@@ -16,7 +17,8 @@
 			console.log("v#{pkg.version}")
 			return @
 
-)(global)
+	return
+
 
 
 
